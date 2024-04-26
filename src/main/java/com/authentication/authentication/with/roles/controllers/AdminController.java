@@ -24,7 +24,7 @@ public class AdminController {
         return "Admin level access";
     }
 
-    @GetMapping("admin-role")
+    @GetMapping("list-all-users/")
     public List<UserListDTO> getAllUsers() {
         return userService.getAllUsers();
     }

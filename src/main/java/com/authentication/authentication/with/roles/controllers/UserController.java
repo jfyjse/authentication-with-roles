@@ -32,9 +32,5 @@ public class UserController {
         return "User access level";
     }
 
-//    @GetMapping("/testing")
-//    public List<User> getAllUsers() {
-//        return userService.getAllUsers();
-//    }
 
 }

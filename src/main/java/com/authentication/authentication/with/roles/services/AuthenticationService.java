@@ -84,14 +84,19 @@ public class AuthenticationService {
         else {
 
             Role adminRole = roleRepository.save(new Role("ADMIN"));
-            roleRepository.save(new Role("USER"));
+            Role userRole = roleRepository.save(new Role("USER"));
 
-            Set<Role> roles = new HashSet<>();
-            roles.add(adminRole);
+            Set<Role> adminRoleSet = new HashSet<>();
+            adminRoleSet.add(adminRole);
 
-            ApplicationUser admin = new ApplicationUser(1, "admin", passwordEncoder.encode("password"), roles);
+            Set<Role> userRoleSet = new HashSet<>();
+            userRoleSet.add(userRole);
+
+            ApplicationUser admin = new ApplicationUser(0, "admin", passwordEncoder.encode("password"), adminRoleSet);
+            ApplicationUser user = new ApplicationUser(0, "user", passwordEncoder.encode("password"), userRoleSet);
 
             userRepository.save(admin);
+            userRepository.save(user);
 
             apiValidator=Boolean.FALSE;
         }

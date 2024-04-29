@@ -72,4 +72,36 @@ public class AuthenticationService {
         }
     }
 
+    public String initAdmin(){
+        Boolean apiValidator;
+        String initalRun = "init done first time !!";
+        String skipRun = "init already done skipping....... !!";
+
+        if(roleRepository.findByAuthority("ADMIN").isPresent()) {
+            apiValidator = Boolean.TRUE;
+        }
+
+        else {
+
+            Role adminRole = roleRepository.save(new Role("ADMIN"));
+            roleRepository.save(new Role("USER"));
+
+            Set<Role> roles = new HashSet<>();
+            roles.add(adminRole);
+
+            ApplicationUser admin = new ApplicationUser(1, "admin", passwordEncoder.encode("password"), roles);
+
+            userRepository.save(admin);
+
+            apiValidator=Boolean.FALSE;
+        }
+        if (apiValidator){
+            return skipRun;
+        }
+        else {
+            return initalRun;
+        }
+
+    }
+
 }

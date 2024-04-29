@@ -6,6 +6,7 @@ import com.authentication.authentication.with.roles.models.ApplicationUser;
 import com.authentication.authentication.with.roles.services.AuthenticationService;
 import com.authentication.authentication.with.roles.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,13 +28,13 @@ public class AdminController {
     }
 
     @PostMapping("/register-user")
-    public ApplicationUser registerUser(@RequestBody RegistrationDTO body){
+    public ResponseEntity<ApplicationUser> registerUser(@RequestBody RegistrationDTO body){
         return authenticationService.registerUser(body.getUsername(), body.getPassword());
     }
 
 
     @PostMapping("/register-admin")
-    public ApplicationUser registerAdmin(@RequestBody RegistrationDTO body){
+    public ResponseEntity<ApplicationUser> registerAdmin(@RequestBody RegistrationDTO body){
         return authenticationService.registerAdmin(body.getUsername(), body.getPassword());
     }
 

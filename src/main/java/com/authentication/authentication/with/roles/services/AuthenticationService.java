@@ -37,76 +37,80 @@ public class AuthenticationService {
     @Autowired
     private TokenService tokenService;
 
-    public ApplicationUser registerUser(String username, String password){
+    public ResponseEntity<ApplicationUser> registerUser(String username, String password) {
 
         String encodedPassword = passwordEncoder.encode(password);
-        if(roleRepository.findByAuthority("USER").isPresent()) {
-            Role userRole = roleRepository.findByAuthority("USER").get();
 
-            Set<Role> authorities = new HashSet<>();
+        if (userRepository.findByUsername(username).isPresent()) {
+            System.out.println("User Exists");
+            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(null);
+        } else {
 
-            authorities.add(userRole);
+            Set<Role> authorities = null;
+            if (roleRepository.findByAuthority("USER").isPresent()) {
+                Role userRole = roleRepository.findByAuthority("USER").get();
 
-            return userRepository.save(new ApplicationUser(0, username, encodedPassword, authorities));
-        }
-        else {
-            String s = "";
+                authorities = new HashSet<>();
 
-            return registerUser(s,s);
+                authorities.add(userRole);
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(new ApplicationUser(0, username, encodedPassword, authorities)));
 
         }
     }
 
-    public ApplicationUser registerAdmin(String username, String password){
+    public ResponseEntity<ApplicationUser> registerAdmin(String username, String password) {
+
 
         String encodedPassword = passwordEncoder.encode(password);
-        if(roleRepository.findByAuthority("ADMIN").isPresent()) {
-            Role userRole = roleRepository.findByAuthority("ADMIN").get();
 
-            Set<Role> authorities = new HashSet<>();
+        if (userRepository.findByUsername(username).isPresent()) {
+            System.out.println("User Exists");
+            return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(null);
+        } else {
 
-            authorities.add(userRole);
+            Set<Role> authorities = null;
+            if (roleRepository.findByAuthority("ADMIN").isPresent()) {
+                Role userRole = roleRepository.findByAuthority("ADMIN").get();
 
-            return userRepository.save(new ApplicationUser(0, username, encodedPassword, authorities));
-        }
-        else {
-            String s = "";
+                authorities = new HashSet<>();
 
-            return registerUser(s,s);
+                authorities.add(userRole);
+            }
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(new ApplicationUser(0, username, encodedPassword, authorities)));
 
         }
     }
 
-    public ResponseEntity<LoginResponseDTO> loginUser(String username, String password){
+    public ResponseEntity<LoginResponseDTO> loginUser(String username, String password) {
 
 
-            if (userRepository.findByUsername(username).isPresent()){
-                Authentication auth = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(username, password)
-                );
+        if (userRepository.findByUsername(username).isPresent()) {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
 
-                String token = tokenService.generateJwt(auth);
+            String token = tokenService.generateJwt(auth);
 
-                return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(userRepository.findByUsername(username).get(), token));
+            return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(userRepository.findByUsername(username).get(), token));
 
-            }
-            else {
-                System.out.println("1222");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new LoginResponseDTO(null, ""));
+        } else {
+            System.out.println("1222");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new LoginResponseDTO(null, ""));
 
-            }
+        }
     }
 
-    public String initAdmin(){
+    public String initAdmin() {
         Boolean apiValidator;
         String initialRun = "init done first time !!";
         String skipRun = "init already done skipping....... !!";
 
-        if(roleRepository.findByAuthority("ADMIN").isPresent()) {
+        if (roleRepository.findByAuthority("ADMIN").isPresent()) {
             apiValidator = Boolean.TRUE;
-        }
-
-        else {
+        } else {
 
             Role adminRole = roleRepository.save(new Role("ADMIN"));
             Role userRole = roleRepository.save(new Role("USER"));
@@ -123,12 +127,11 @@ public class AuthenticationService {
             userRepository.save(admin);
             userRepository.save(user);
 
-            apiValidator=Boolean.FALSE;
+            apiValidator = Boolean.FALSE;
         }
-        if (apiValidator){
+        if (apiValidator) {
             return skipRun;
-        }
-        else {
+        } else {
             return initialRun;
         }
 

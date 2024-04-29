@@ -6,6 +6,8 @@ import com.authentication.authentication.with.roles.models.Role;
 import com.authentication.authentication.with.roles.repository.RoleRepository;
 import com.authentication.authentication.with.roles.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -56,25 +58,29 @@ public class AuthenticationService {
         }
     }
 
-    public LoginResponseDTO loginUser(String username, String password){
+    public ResponseEntity<LoginResponseDTO> loginUser(String username, String password){
 
-        try{
-            Authentication auth = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
 
-            String token = tokenService.generateJwt(auth);
+            if (userRepository.findByUsername(username).isPresent()){
+                Authentication auth = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(username, password)
+                );
 
-            return new LoginResponseDTO(userRepository.findByUsername(username).get(), token);
+                String token = tokenService.generateJwt(auth);
 
-        } catch(AuthenticationException e){
-            return new LoginResponseDTO(null, "");
-        }
+                return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(userRepository.findByUsername(username).get(), token));
+
+            }
+            else {
+                System.out.println("1222");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new LoginResponseDTO(null, ""));
+
+            }
     }
 
     public String initAdmin(){
         Boolean apiValidator;
-        String initalRun = "init done first time !!";
+        String initialRun = "init done first time !!";
         String skipRun = "init already done skipping....... !!";
 
         if(roleRepository.findByAuthority("ADMIN").isPresent()) {
@@ -86,14 +92,14 @@ public class AuthenticationService {
             Role adminRole = roleRepository.save(new Role("ADMIN"));
             Role userRole = roleRepository.save(new Role("USER"));
 
-            Set<Role> adminRoleSet = new HashSet<>();
-            adminRoleSet.add(adminRole);
+            Set<Role> adminRoleAuthority = new HashSet<>();
+            adminRoleAuthority.add(adminRole);
 
-            Set<Role> userRoleSet = new HashSet<>();
-            userRoleSet.add(userRole);
+            Set<Role> userRoleAuthority = new HashSet<>();
+            userRoleAuthority.add(userRole);
 
-            ApplicationUser admin = new ApplicationUser(0, "admin", passwordEncoder.encode("password"), adminRoleSet);
-            ApplicationUser user = new ApplicationUser(0, "user", passwordEncoder.encode("password"), userRoleSet);
+            ApplicationUser admin = new ApplicationUser(0, "admin", passwordEncoder.encode("password"), adminRoleAuthority);
+            ApplicationUser user = new ApplicationUser(0, "user", passwordEncoder.encode("password"), userRoleAuthority);
 
             userRepository.save(admin);
             userRepository.save(user);
@@ -104,7 +110,7 @@ public class AuthenticationService {
             return skipRun;
         }
         else {
-            return initalRun;
+            return initialRun;
         }
 
     }

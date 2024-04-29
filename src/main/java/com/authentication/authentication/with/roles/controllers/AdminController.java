@@ -6,7 +6,6 @@ import com.authentication.authentication.with.roles.models.ApplicationUser;
 import com.authentication.authentication.with.roles.services.AuthenticationService;
 import com.authentication.authentication.with.roles.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

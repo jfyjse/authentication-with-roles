@@ -5,6 +5,7 @@ import com.authentication.authentication.with.roles.dto.RegistrationDTO;
 import com.authentication.authentication.with.roles.models.ApplicationUser;
 import com.authentication.authentication.with.roles.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +24,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public LoginResponseDTO loginUser(@RequestBody RegistrationDTO body){
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody RegistrationDTO body){
         return authenticationService.loginUser(body.getUsername(), body.getPassword());
     }
 

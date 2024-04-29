@@ -5,6 +5,8 @@ import com.authentication.authentication.with.roles.models.ApplicationUser;
 import com.authentication.authentication.with.roles.models.Role;
 import com.authentication.authentication.with.roles.repository.RoleRepository;
 import com.authentication.authentication.with.roles.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import java.util.Set;
 @Service
 @Transactional
 public class AuthenticationService {
+
+    Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -42,7 +46,7 @@ public class AuthenticationService {
         String encodedPassword = passwordEncoder.encode(password);
 
         if (userRepository.findByUsername(username).isPresent()) {
-            System.out.println("User Exists");
+            logger.error("User Exists");
             return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(null);
         } else {
 
@@ -66,7 +70,7 @@ public class AuthenticationService {
         String encodedPassword = passwordEncoder.encode(password);
 
         if (userRepository.findByUsername(username).isPresent()) {
-            System.out.println("Admin Exists");
+            logger.error("Admin Exists");
             return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(null);
         } else {
 

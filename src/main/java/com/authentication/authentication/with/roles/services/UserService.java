@@ -4,6 +4,8 @@ import com.authentication.authentication.with.roles.dto.UserListDTO;
 import com.authentication.authentication.with.roles.models.ApplicationUser;
 import com.authentication.authentication.with.roles.models.Role;
 import com.authentication.authentication.with.roles.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
+    Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     private PasswordEncoder encoder;
 
@@ -26,7 +30,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        System.out.println("In the user details service");
+        logger.info("in user details !!");
 
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("user is not valid"));
     }

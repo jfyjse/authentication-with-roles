@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +42,26 @@ public class AuthenticationService {
         String encodedPassword = passwordEncoder.encode(password);
         if(roleRepository.findByAuthority("USER").isPresent()) {
             Role userRole = roleRepository.findByAuthority("USER").get();
+
+            Set<Role> authorities = new HashSet<>();
+
+            authorities.add(userRole);
+
+            return userRepository.save(new ApplicationUser(0, username, encodedPassword, authorities));
+        }
+        else {
+            String s = "";
+
+            return registerUser(s,s);
+
+        }
+    }
+
+    public ApplicationUser registerAdmin(String username, String password){
+
+        String encodedPassword = passwordEncoder.encode(password);
+        if(roleRepository.findByAuthority("ADMIN").isPresent()) {
+            Role userRole = roleRepository.findByAuthority("ADMIN").get();
 
             Set<Role> authorities = new HashSet<>();
 

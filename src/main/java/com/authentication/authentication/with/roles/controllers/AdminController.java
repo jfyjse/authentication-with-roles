@@ -34,7 +34,7 @@ public class AdminController {
 
     @PostMapping("/register-admin")
     public ApplicationUser registerAdmin(@RequestBody RegistrationDTO body){
-        return authenticationService.registerUser(body.getUsername(), body.getPassword());
+        return authenticationService.registerAdmin(body.getUsername(), body.getPassword());
     }
 
     @GetMapping("/list-all-users")

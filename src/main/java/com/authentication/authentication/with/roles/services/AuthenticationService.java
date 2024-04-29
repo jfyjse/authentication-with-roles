@@ -66,7 +66,7 @@ public class AuthenticationService {
         String encodedPassword = passwordEncoder.encode(password);
 
         if (userRepository.findByUsername(username).isPresent()) {
-            System.out.println("User Exists");
+            System.out.println("Admin Exists");
             return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(null);
         } else {
 

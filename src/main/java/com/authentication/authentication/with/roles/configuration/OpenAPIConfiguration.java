@@ -16,8 +16,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info =@Info(
-                title = "User API",
-                version = "V-000.001.alpha",
+                title = "Authentication with roles",
+                version = "0.001.alpha",
                 contact = @Contact(
                         name = "Joffy", email = "joffy@sayonetech.com", url = "https://www.sayonetech.com"
                 ),

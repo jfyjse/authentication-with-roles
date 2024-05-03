@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
                 description = "Authentication with roles"
         ),
         servers = @Server(
-                url = "${localhost:8888}",
+                url = "http://localhost:8888",
                 description = "Dev-test"
         )
 )

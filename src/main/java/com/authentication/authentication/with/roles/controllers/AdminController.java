@@ -17,12 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin("*")
-@Configuration
-@SecurityScheme(
-        name = "Bearer Authentication",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer"
-)
+
 public class AdminController {
 
     @Autowired
@@ -31,10 +26,6 @@ public class AdminController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @GetMapping("/")
-    public String sampleAdminController(){
-        return "Admin level access";
-    }
 
     @PostMapping("/register-user")
     public ResponseEntity<ApplicationUser> registerUser(@RequestBody RegistrationDTO body){

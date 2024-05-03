@@ -5,7 +5,10 @@ import com.authentication.authentication.with.roles.dto.UserListDTO;
 import com.authentication.authentication.with.roles.models.ApplicationUser;
 import com.authentication.authentication.with.roles.services.AuthenticationService;
 import com.authentication.authentication.with.roles.services.UserService;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin("*")
+@Configuration
+@SecurityScheme(
+        name = "Bearer Authentication",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer"
+)
 public class AdminController {
 
     @Autowired
@@ -37,6 +46,7 @@ public class AdminController {
     public ResponseEntity<ApplicationUser> registerAdmin(@RequestBody RegistrationDTO body){
         return authenticationService.registerAdmin(body.getUsername(), body.getPassword());
     }
+
 
     @GetMapping("/list-all-users")
     public List<UserListDTO> getAllUsers() {

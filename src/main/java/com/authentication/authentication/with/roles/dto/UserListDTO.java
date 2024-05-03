@@ -1,7 +1,6 @@
 package com.authentication.authentication.with.roles.dto;
 
 import com.authentication.authentication.with.roles.models.Role;
-import jakarta.persistence.Column;
 
 import java.util.Set;
 
@@ -11,7 +10,7 @@ public class UserListDTO {
     private String username;
     private String password;
     private Set<Role> authorities;
-    
+
 
     public Integer getUserId() {
         return userId;

@@ -2,7 +2,6 @@ package com.authentication.authentication.with.roles.controllers;
 
 import com.authentication.authentication.with.roles.dto.LoginResponseDTO;
 import com.authentication.authentication.with.roles.dto.RegistrationDTO;
-import com.authentication.authentication.with.roles.models.ApplicationUser;
 import com.authentication.authentication.with.roles.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +18,12 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody RegistrationDTO body){
+    public ResponseEntity<LoginResponseDTO> loginUser(@RequestBody RegistrationDTO body) {
         return authenticationService.loginUser(body.getUsername(), body.getPassword());
     }
 
     @PostMapping("/init-admin")
-    public String initAdmin(){
+    public String initAdmin() {
         return authenticationService.initAdmin();
     }
 }

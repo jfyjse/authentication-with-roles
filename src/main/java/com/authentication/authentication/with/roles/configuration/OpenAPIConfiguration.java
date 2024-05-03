@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @OpenAPIDefinition(
-        info =@Info(
+        info = @Info(
                 title = "Authentication with roles",
                 version = "0.001.alpha",
                 contact = @Contact(

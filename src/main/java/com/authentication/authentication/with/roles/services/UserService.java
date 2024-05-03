@@ -2,7 +2,6 @@ package com.authentication.authentication.with.roles.services;
 
 import com.authentication.authentication.with.roles.dto.UserListDTO;
 import com.authentication.authentication.with.roles.models.ApplicationUser;
-import com.authentication.authentication.with.roles.models.Role;
 import com.authentication.authentication.with.roles.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +49,6 @@ public class UserService implements UserDetailsService {
         dto.setAuthorities(user.getAuthorities());
         return dto;
     }
-
-
 
 
 }
